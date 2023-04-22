@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IoPersonRemove } from 'react-icons/io5';
 import { TiDelete } from 'react-icons/ti';
 import { Btn, Item, List } from './ContactList.styled';
 
