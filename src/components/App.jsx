@@ -7,33 +7,40 @@ import { ContactForm } from './ContactForm/ContactForm';
 import { Header } from './Header/Header';
 import Filter from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
+import { nanoid } from 'nanoid';
 
 export default class App extends Component {
   state = {
     contacts: initialContacts,
     filter: '',
   };
-addContact = (newContact) => {
-  const isExist = this.state.contacts.some(({name, number}) => name.toLowerCase().trim() === newContact.name.toLowerCase().trim() || number.trim() === newContact.number.trim())
-  if (isExist) {
-    return alert(`Contact ${newContact.name} already exists`);
-  }
-  this.setState(prevState => ({
-    contacts: [newContact, ...prevState.contacts],
-  }));
-}
+  addContact = newContact => {
+    const isExist = this.state.contacts.some(
+      ({ name, number }) =>
+        name.toLowerCase() === newContact.name.toLowerCase() ||
+        number === newContact.number
+    );
+    if (isExist) {
+      return alert(`Contact ${newContact.name} already exists`);
+    }
+    this.setState(prevState => ({
+      contacts: [{id: nanoid(), ...newContact}, ...prevState.contacts],
+    }));
+  };
 
-deleteContact = (idContact) => {
-this.setState(
-  prevState => ({
-    contacts: prevState.contacts.filter(contact => contact.id !== idContact)
-  })
-)
-}
+  deleteContact = idContact => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== idContact),
+    }));
+  };
 
-changeFilter = (evt) => this.setState({filter: evt.target.value.toLowerCase()})
+  changeFilter = evt =>
+    this.setState({ filter: evt.target.value.toLowerCase() });
 
-getVisibleContacts = () => this.state.contacts.filter(contact => contact.name.toLowerCase().includes(this.state.filter.toLowerCase()))
+  getVisibleContacts = () =>
+    this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(this.state.filter.toLowerCase())
+    );
 
   render() {
     const { filter, contacts } = this.state;
@@ -57,4 +64,4 @@ getVisibleContacts = () => this.state.contacts.filter(contact => contact.name.to
       </Layout>
     );
   }
-};
+}
